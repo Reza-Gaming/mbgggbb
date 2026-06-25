@@ -1,75 +1,41 @@
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, FlatList, Image, Text, View } from "react-native";
-import GradientBackground from "../components/GradientBackground";
-import GradientButton from "../components/GradientButton";
-import TagItem from "../components/TagItem";
-import { Colors, recipeStyles as styles } from "../constants/Colors";
+import Header from "../../components/Header"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { View, FlatList } from 'react-native'
+import { LinearGradient } from "expo-linear-gradient"
+import TagItem from "../components/TagItem"
+import RecipeItem from "../components/RecipeItem"
+import { COLOR } from "../constants/Colors"
 
-interface Recipe {
-    id: number;
-    name: string;
-    image: string;
-    tags: string[];
-}
+const RecipeScreen = () => {
+    const [recipes, setRecipes] = useState<any[]>([])
+    const [tags, setTags] = useState<string[]>([])
+    const [selectedTag, setSelectedTag] = useState<string | null>(null)
 
-const { width } = Dimensions.get('window');
-const itemWidth = (width - 60) / 2;
+    const getRecipes = async () => {
+        const { data } = await axios.get('https://dummyjson.com/recipes?limit=20')
+        setRecipes(data.recipes)
+    }
 
-export default function RecipeScreen() {
-    const [recipes, setRecipes] = useState<Recipe[]>([]);
-    const [tags, setTags] = useState<string[]>([]);
-    const [selectedTag, setSelectedTag] = useState<string | null>(null);
-    const [loading, setLoading] = useState(true);
+    const getTags = async () => {
+        const { data } = await axios.get('https://dummyjson.com/recipes/tags')
+        setTags(data)
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [recipesRes, tagsRes] = await Promise.all([
-                    fetch('https://dummyjson.com/recipes?limit=20&select=name,image,tags'),
-                    fetch('https://dummyjson.com/recipes/tags'),
-                ]);
-                const recipesData = await recipesRes.json();
-                const tagsData = await tagsRes.json();
-                setRecipes(recipesData.recipes);
-                setTags(tagsData);
-            } catch (error) {
-                console.error('Gagal mengambil data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    if (loading) {
-        return (
-            <GradientBackground style={styles.container}>
-                <ActivityIndicator size="large" color={Colors.white} />
-            </GradientBackground>
-        );
-    }
+        getRecipes()
+        getTags()
+    }, [])
 
     const filteredRecipes = selectedTag
         ? recipes.filter((r) => r.tags?.includes(selectedTag))
-        : recipes;
-
-    const renderItem = ({ item }: { item: Recipe }) => (
-        <View style={[styles.card, { width: itemWidth }]}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Link href={`/recipe/${item.id}`} asChild>
-                <GradientButton title={item.name} onPress={() => { }} />
-            </Link>
-        </View>
-    );
+        : recipes
 
     return (
-        <GradientBackground style={styles.container}>
-            <Text style={styles.title}>Daftar Resep</Text>
-
-            {/* List Tags */}
+        <LinearGradient colors={[COLOR.gradientStart, COLOR.gradientEnd]} style={{ flex: 1 }}>
             <View>
+                <Header />
+                {/* List Tags */}
                 <FlatList
                     data={tags}
                     renderItem={({ item }) => (
@@ -82,22 +48,30 @@ export default function RecipeScreen() {
                     keyExtractor={(item) => item}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ gap: 8, paddingBottom: 12 }}
+                    contentContainerStyle={{ gap: 8, paddingHorizontal: 10, paddingBottom: 12 }}
                 />
             </View>
 
             {/* List Recipe */}
-            <View style={{ flex: 1, marginTop: 10 }}>
+            <View style={{ flex: 1, margin: 10 }}>
                 <FlatList
                     data={filteredRecipes}
+                    renderItem={({ item }) => (
+                        <RecipeItem
+                            id={item.id}
+                            name={item.name}
+                            cookTimeMinutes={item.cookTimeMinutes}
+                            image={item.image}
+                        />
+                    )}
                     keyExtractor={(item) => item.id.toString()}
                     numColumns={2}
-                    columnWrapperStyle={styles.columnWrapper}
-                    contentContainerStyle={styles.listContent}
-                    renderItem={renderItem}
+                    columnWrapperStyle={{ justifyContent: "space-between", gap: 16 }}
+                    contentContainerStyle={{ gap: 16 }}
                 />
             </View>
-        </GradientBackground>
-    );
+        </LinearGradient>
+    )
 }
 
+export default RecipeScreen

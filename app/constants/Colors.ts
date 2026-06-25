@@ -2,31 +2,31 @@ import { StyleSheet } from 'react-native';
 
 
 export const COLOR = {
-    primary: '#4CAF50',
-    secondary: '#FFC107',
-    background: '#ffffffff',
-    text: '#333333',
+    primary: '#C9A84C',
+    secondary: '#A0785A',
+    background: '#0D1117',
+    text: '#E8E8E8',
     white: '#FFFFFF',
-    gradientStart: '#cb1f01ff',
-    gradientEnd: '#face2fff'
+    gradientStart: '#0D1117',
+    gradientEnd: '#1C2A3A'
 }
 export const Colors = {
-    primary: '#edcc29ff',
-    secondary: '#FFC107',
-    background: '#ea3b00ff',
-    text: '#333333',
+    primary: '#C9A84C',
+    secondary: '#A0785A',
+    background: '#0D1117',
+    text: '#E8E8E8',
     white: '#FFFFFF',
-    gradientStart: '#cb1f01ff',
-    gradientEnd: '#face2fff'
+    gradientStart: '#0D1117',
+    gradientEnd: '#1C2A3A'
 }
 export const Colors2 = {
-    primary: '#4CAF50',
-    secondary: '#FFC107',
-    background: '#ffffffff',
-    text: '#333333',
+    primary: '#C9A84C',
+    secondary: '#A0785A',
+    background: '#0D1117',
+    text: '#E8E8E8',
     white: '#FFFFFF',
-    gradientStart: '#f47e17ff',
-    gradientEnd: '#FFC81E'
+    gradientStart: '#1C2A3A',
+    gradientEnd: '#0D1117'
 }
 
 export const indexStyles = StyleSheet.create({
@@ -39,7 +39,7 @@ export const indexStyles = StyleSheet.create({
         borderRadius: 25,
     },
     imageWrapper:{
-        width: '90%',
+        width: '100%',
         borderRadius: 25,
         overflow: 'hidden',
         elevation: 15,
@@ -50,7 +50,7 @@ export const indexStyles = StyleSheet.create({
         justifyContent: "flex-start",
         position: "relative",
         borderRadius: 12,
-        paddingTop: 60,
+        paddingTop: 16,
     },
     content: {
         flex: 1,
@@ -59,13 +59,13 @@ export const indexStyles = StyleSheet.create({
         flexDirection : "column",
     },
     title: {
-        fontSize: 35,
+        fontSize: 27,
         fontWeight: "600",
-        color:Colors.primary,
-        marginBottom: 8,
-        textShadowColor: Colors.text,
-        textShadowOffset: {width: 1, height: 1},
-        textShadowRadius: 3,
+        color: Colors.primary,
+        marginBottom: 4,
+        textShadowColor: 'rgba(0,0,0,0.9)',
+        textShadowOffset: {width: 2, height: 2},
+        textShadowRadius: 8,
     },
     overlay: {
         position: 'absolute',
@@ -77,6 +77,13 @@ export const indexStyles = StyleSheet.create({
         color: Colors.primary,
         paddingHorizontal: 15,
         letterSpacing: 5,
+    },
+    minutes: {
+        color: Colors.white,
+        fontSize: 13,
+        textShadowColor: 'rgba(0,0,0,0.9)',
+        textShadowOffset: {width: 1, height: 1},
+        textShadowRadius: 6,
     },
 });
 
